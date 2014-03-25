@@ -1,6 +1,5 @@
 <?php //login.php
 include_once 'header.php';
-echo "<div class='main'><h3>Please enter your details to log in</h3>";
 $error = $user = $pass = "";
 
 if (isset($_POST['user']))
@@ -26,12 +25,12 @@ if (isset($_POST['user']))
         {
             $_SESSION['user'] = $user;
             $_SESSION['pass'] = $pass;
-            die("You are now logged in. Please <a href='members.php?view=$user'>" .
-                "click here</a> to continue.<br /><br />");
+            echo "<script> location.replace('members.php?user=$user');</script>";
+            die();
         }
     }
 }
-
+echo "<div class='main'><h3>Please enter your details to log in</h3>";
 echo <<<_END
 <form method='post' action='login.php'>$error
 <span class='fieldname'>Username</span><input type='text'

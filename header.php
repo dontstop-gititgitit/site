@@ -1,7 +1,8 @@
 <?php //header.php
 
 session_start();
-echo "<!DOCTYPE html>\n<html><head><script src='js/osc.js'></script>";
+echo "<!DOCTYPE html>\n<html><head><script src='js/osc.js'></script><script src='http://code.jquery.com/jquery-1.11.0.min.js'></script>
+<script src='http://code.jquery.com/jquery-migrate-1.2.1.min.js'></script>";
 include 'functions.php';
 
 $userstr = ' (Guest)';
@@ -24,7 +25,7 @@ if ($loggedin) {
 		 "<li><a href='members.php'>Members</a></li>" . 
 		 "<li><a href='friends.php'>Friends</a></li>" . 
 		 "<li><a href='messages.php'>Messages</a></li>" . 
-		 "<li><a href='profile'>Edit Profile</a></li>" . 
+		 "<li><a href='profile.php'>Edit Profile</a></li>" . 
 		 "<li><a href='logout.php'>Log Out</a></li></ul><br />";
 }
 else {

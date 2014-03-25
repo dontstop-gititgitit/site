@@ -8,15 +8,15 @@ if (!$loggedin) {
 
 echo "<div class='main'><h3>Your Profile</h3>";
 
-if (isset($_POST['text'])) {
-	$text = sanitizeString($_POST['text']);
-	$text = preg_replace('/\s\s+/', ' ', $text);
+if (isset($_POST['department'])) {
+	$department = sanitizeString($_POST['department']);
+	$department = preg_replace('/\s\s+/', ' ', $department);
 
 	if (mysql_num_rows(queryMysql("SELECT * FROM profiles WHERE user='$user'"))) {
-		queryMysql("UPDATE profiles SET text='$text' WHERE user='$user'");
+		queryMysql("UPDATE profiles SET department='$department' WHERE user='$user'");
 	}
 	else {
-		queryMysql("INSERT INTO profiles VALUES('$user', '$text')");
+		queryMysql("INSERT INTO profiles VALUES('$user', '$department')");
 	}
 }
 else {
@@ -24,17 +24,40 @@ else {
 
 	if (mysql_num_rows($result)) {
 		$row = mysql_fetch_row($result);
-		$text = stripslashes($row[1]);
+		$department = stripslashes($row[1]);
 	}
 	else {
-		$text = "";
+		$department = "";
 	}
 }
+$department = stripslashes(preg_replace('/\s\s+/', ' ', $department));
 
-$text = stripslashes(preg_replace('/\s\s+/', ' ', $text));
+if (isset($_POST['position'])) {
+	$position = sanitizeString($_POST['position']);
+	$position = preg_replace('/\s\s+/', ' ', $position);
+
+	if (mysql_num_rows(queryMysql("SELECT * FROM profiles WHERE user='$user'"))) {
+		queryMysql("UPDATE profiles SET position='$position' WHERE user='$user'");
+	}
+	else {
+		queryMysql("INSERT INTO profiles VALUES('$user', '$position')");
+	}
+}
+else {
+	$result = queryMysql("SELECT * FROM profiles WHERE user='$user'");
+
+	if (mysql_num_rows($result)) {
+		$row = mysql_fetch_row($result);
+		$position = stripslashes($row[1]);
+	}
+	else {
+		$position = "";
+	}
+}
+$position = stripslashes(preg_replace('/\s\s+/', ' ', $position));
 
 if (isset($_FILES['image']['name'])) {
-	$saveto = "$user.jpg";
+	$saveto = "img/$user.jpg";
 	move_uploaded_file($_FILES['image']['tmp_name'], $saveto);
 	$typeok = TRUE;
 
@@ -55,9 +78,9 @@ if (isset($_FILES['image']['name'])) {
 	}
 
 	if ($typeok) {
-		$list($w, $h) = getimagesize($saveto);
+		list($w, $h) = getimagesize($saveto);
 
-		$max = 100;
+		$max = 200;
 		$tw = $w;
 		$th = $h;
 
@@ -83,15 +106,13 @@ if (isset($_FILES['image']['name'])) {
 }
 
 showProfile($user);
-
-echo <<<_END
-<form method='post' action='profile.php' enctype='multipart/form-data'>
-<h3>Enter or edit your details and/or upload an image</h3>
-<textarea name='text' cols='50' rows='3'>$text</textarea><br />
-_END;
-
 ?>
 
+<form method='post' action='profile.php' enctype='multipart/form-data'>
+<span>Department: <?php echo "$department" ?></span><textarea name='department' cols='50' rows='3' placeholder="Department"><?php $department ?></textarea><br />
+<span>Position: <?php echo "$position" ?></span><textarea name='position' cols='50' rows='3' placeholder="Position"><?php $position ?></textarea><br />
 Image: <input type='file' name='image' size='14' maxLength='32' />
 <input type='submit' value='Save Profile' />
 </form></div><br /></body></html>
+
+

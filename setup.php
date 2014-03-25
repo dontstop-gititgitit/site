@@ -2,7 +2,7 @@
 
 <h3>Setting up...</h3>
 
-<?php // Example 21-3: setup.php
+<?php //setup.php
 include_once 'functions.php';
 
 createTable('members',
@@ -28,7 +28,8 @@ createTable('friends',
 
 createTable('profiles',
             'user VARCHAR(16),
-            text VARCHAR(4096),
+            department VARCHAR(4096),
+            position VARCHAR(4096),
             INDEX(user(6))');
 ?>
 
